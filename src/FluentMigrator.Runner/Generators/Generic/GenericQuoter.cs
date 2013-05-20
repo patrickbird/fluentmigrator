@@ -150,6 +150,11 @@ namespace FluentMigrator.Runner.Generators.Generic
             return (!string.IsNullOrEmpty(OpenQuote) || !string.IsNullOrEmpty(CloseQuote)) && !string.IsNullOrEmpty(name);
         }
 
+        private bool ShouldQuoteIdentifiers(string identifier)
+        {
+            return UseQuotedIdentifiers && IsQuoted(identifier);
+        }
+
         /// <summary>
         /// Returns a quoted string that has been correctly escaped
         /// </summary>
@@ -182,7 +187,7 @@ namespace FluentMigrator.Runner.Generators.Generic
         /// </summary>
         public virtual string QuoteColumnName(string columnName)
         {
-            return IsQuoted(columnName) ? columnName : Quote(columnName);
+            return ShouldQuoteIdentifiers(columnName) ? columnName : Quote(columnName);
         }
 
         /// <summary>
@@ -190,7 +195,7 @@ namespace FluentMigrator.Runner.Generators.Generic
         /// </summary>
         public virtual string QuoteConstraintName(string constraintName)
         {
-            return IsQuoted(constraintName) ? constraintName : Quote(constraintName);
+            return ShouldQuoteIdentifiers(constraintName) ? constraintName : Quote(constraintName);
         }
 
         /// <summary>
@@ -200,7 +205,7 @@ namespace FluentMigrator.Runner.Generators.Generic
         /// <returns></returns>
         public virtual string QuoteIndexName(string indexName)
         {
-            return IsQuoted(indexName) ? indexName : Quote(indexName);
+            return ShouldQuoteIdentifiers(indexName) ? indexName : Quote(indexName);
         }
 
         /// <summary>
@@ -208,7 +213,7 @@ namespace FluentMigrator.Runner.Generators.Generic
         /// </summary>
         public virtual string QuoteTableName(string tableName)
         {
-            return IsQuoted(tableName) ? tableName : Quote(tableName);
+            return ShouldQuoteIdentifiers(tableName) ? tableName : Quote(tableName);
         }
 
         /// <summary>
@@ -216,7 +221,7 @@ namespace FluentMigrator.Runner.Generators.Generic
         /// </summary>
         public virtual string QuoteSchemaName(string schemaName)
         {
-            return IsQuoted(schemaName) ? schemaName : Quote(schemaName);
+            return ShouldQuoteIdentifiers(schemaName) ? schemaName : Quote(schemaName);
         }
 
         /// <summary>
@@ -224,7 +229,7 @@ namespace FluentMigrator.Runner.Generators.Generic
         /// </summary>
         public virtual string QuoteSequenceName(string sequenceName)
         {
-            return IsQuoted(sequenceName) ? sequenceName : Quote(sequenceName);
+            return ShouldQuoteIdentifiers(sequenceName) ? sequenceName : Quote(sequenceName);
         }
 
         /// <summary>
