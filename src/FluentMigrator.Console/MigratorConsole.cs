@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using FluentMigrator.Runner;
 using FluentMigrator.Runner.Announcers;
 using FluentMigrator.Runner.Initialization;
@@ -50,6 +51,7 @@ namespace FluentMigrator.Console
         public long Version;
         public string WorkingDirectory;
         public bool TransactionPerSession;
+        public string ProviderSwitches;
 
         public RunnerContext RunnerContext { get; private set;}
 
@@ -169,6 +171,11 @@ namespace FluentMigrator.Console
                                             "transaction-per-session|tps",
                                             "Overrides the transaction behavior of migrations, so that all migrations to be executed will run in one transaction.",
                                             v => { TransactionPerSession = true; }
+                                            },
+                                        {
+                                            "provider-switches=",
+                                            "Specifies switches for specific providers.",
+                                            v => { ProviderSwitches = v; }
                                             }
                                     };
 
@@ -285,10 +292,19 @@ namespace FluentMigrator.Console
                 ConnectionStringConfigPath = ConnectionStringConfigPath,
                 ApplicationContext = ApplicationContext,
                 Tags = Tags,
-                TransactionPerSession = TransactionPerSession
+                TransactionPerSession = TransactionPerSession,
+                ProviderSwitches = GetProviderSwitches()
             };
 
             new TaskExecutor(RunnerContext).Execute();
+        }
+
+        private IDictionary<string, string> GetProviderSwitches()
+        {
+            return ProviderSwitches
+                .Split(';')
+                .Select(s => s.Split('='))
+                .ToDictionary(pair => pair[0], pair => (pair.Length > 1) ? pair[1] : String.Empty);
         }
     }
 }

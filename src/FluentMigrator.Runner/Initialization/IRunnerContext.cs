@@ -38,6 +38,7 @@ namespace FluentMigrator.Runner.Initialization
         int Timeout { get; set; }
         string ConnectionStringConfigPath { get; set; }
         IEnumerable<string> Tags { get; set; }
+        IDictionary<string, string> ProviderSwitches { get; }
 
         bool TransactionPerSession { get; set; }
 
