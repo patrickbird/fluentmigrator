@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using FluentMigrator.Model;
 using FluentMigrator.Runner.Generators.Base;
@@ -7,7 +8,15 @@ namespace FluentMigrator.Runner.Generators.Postgres
 {
     internal class PostgresColumn : ColumnBase
     {
-        public PostgresColumn() : base(new PostgresTypeMap(), new PostgresQuoter()) { }
+        public PostgresColumn()
+            : base(new PostgresTypeMap(), new PostgresQuoter())
+        {
+        }
+
+        public PostgresColumn(IDictionary<string, string> providerSwitches)
+            : base(new PostgresTypeMap(), new PostgresQuoter(providerSwitches))
+        {
+        }
 
         protected override string FormatIdentity(ColumnDefinition column)
         {

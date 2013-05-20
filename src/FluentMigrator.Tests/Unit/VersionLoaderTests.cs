@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using FluentMigrator.Expressions;
@@ -11,6 +12,11 @@ namespace FluentMigrator.Tests.Unit
 {
     public class TestMigrationProcessorOptions : IMigrationProcessorOptions
     {
+        public TestMigrationProcessorOptions()
+        {
+            ProviderSwitches = new Dictionary<string, string>();
+        }
+
         public bool PreviewOnly
         {
             get { return false; }
@@ -20,6 +26,8 @@ namespace FluentMigrator.Tests.Unit
         {
             get { return 30; }
         }
+
+        public IDictionary<string, string> ProviderSwitches { get; private set; }
     }
 
     [TestFixture]

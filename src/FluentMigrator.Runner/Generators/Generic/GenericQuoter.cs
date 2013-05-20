@@ -1,12 +1,28 @@
-﻿using System.Globalization;
-using FluentMigrator.Model;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace FluentMigrator.Runner.Generators.Generic
 {
-    using System;
-
     public class GenericQuoter : IQuoter
     {
+        private readonly bool useQuotedIdentifiers = true;
+
+        public GenericQuoter()
+        {
+        }
+
+        public GenericQuoter(IDictionary<string, string> providerSwitches)
+        {
+            var option = providerSwitches.FirstOrDefault(ps => ps.Key.ToLower() == "quotedidentifiers");
+
+            if (option.Value != null)
+            {
+                useQuotedIdentifiers = Convert.ToBoolean(option.Value);
+            }
+        }
+
         public virtual string QuoteValue(object value)
         {
             if (value == null) { return FormatNull(); }
@@ -30,7 +46,7 @@ namespace FluentMigrator.Runner.Generators.Generic
             if (value is RawSql) { return ((RawSql) value).Value; }
             if (value is byte[]) { return FormatByteArray((byte[])value); }
             
-			return value.ToString();
+            return value.ToString();
         }
 
         protected virtual string FormatByteArray(byte[] value)
@@ -96,7 +112,10 @@ namespace FluentMigrator.Runner.Generators.Generic
 
         public virtual string EscapeValueQuote { get { return ValueQuote + ValueQuote; } }
 
-
+        protected bool UseQuotedIdentifiers
+        {
+            get { return useQuotedIdentifiers; }
+        }
 
         /// <summary>
         /// Returns the opening quote identifier - " is the standard according to the specification

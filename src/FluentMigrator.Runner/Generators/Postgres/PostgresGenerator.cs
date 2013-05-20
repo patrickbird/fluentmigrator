@@ -10,7 +10,15 @@ namespace FluentMigrator.Runner.Generators.Postgres
 {
     public class PostgresGenerator : GenericGenerator
     {
-        public PostgresGenerator() : base(new PostgresColumn(), new PostgresQuoter()) { }
+        public PostgresGenerator() 
+            : base(new PostgresColumn(), new PostgresQuoter())
+        {
+        }
+
+        public PostgresGenerator(IDictionary<string, string> providerSwitches)
+            : base(new PostgresColumn(providerSwitches), new PostgresQuoter(providerSwitches))
+        {
+        }
 
         public override string Generate(CreateSchemaExpression expression)
         {
