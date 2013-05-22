@@ -16,10 +16,11 @@ namespace FluentMigrator.Runner.Generators.Generic
         public GenericQuoter(IDictionary<string, string> providerSwitches)
         {
             var option = providerSwitches.FirstOrDefault(ps => ps.Key.ToLower() == "quotedidentifiers");
+            bool shouldQuote;
 
-            if (option.Value != null)
+            if (option.Value != null && Boolean.TryParse(option.Value, out shouldQuote))
             {
-                useQuotedIdentifiers = Convert.ToBoolean(option.Value);
+                useQuotedIdentifiers = shouldQuote;
             }
         }
 
